@@ -578,7 +578,7 @@ NSComparisonResult compareViewDepth(UIView *view1, UIView *view2, iCarousel *sel
 }
 
 //for iOS
-- (void)DirectionGestureRecognizer
+- (void)layoutSubviews
 {
     contentView.frame = self.bounds;
     [self layOutItemViews];
@@ -588,7 +588,7 @@ NSComparisonResult compareViewDepth(UIView *view1, UIView *view2, iCarousel *sel
 - (void)resizeSubviewsWithOldSize:(NSSize)oldSize
 {
 	[CATransaction setDisableActions:YES];
-    [self DirectionGestureRecognizer];
+    [self layoutSubviews];
 	[CATransaction setDisableActions:NO];
 }
 
@@ -943,11 +943,11 @@ NSComparisonResult compareViewDepth(UIView *view1, UIView *view2, iCarousel *sel
 		previousItemIndex = roundf(scrollOffset/itemWidth);
         if (itemCount > 0)
         {
-            endOffset = (floorf(startOffset / itemWidth) + itemCount) * itemWidth;
+            endOffset = (roundf(startOffset / itemWidth) + itemCount) * itemWidth;
         }
         else if (itemCount < 0)
         {
-            endOffset = (ceilf(startOffset / itemWidth) + itemCount) * itemWidth;
+            endOffset = (roundf(startOffset / itemWidth) + itemCount) * itemWidth;
         }
         else
         {
