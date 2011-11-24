@@ -578,7 +578,7 @@ NSComparisonResult compareViewDepth(UIView *view1, UIView *view2, iCarousel *sel
 }
 
 //for iOS
-- (void)layoutSubviews
+- (void)DirectionGestureRecognizer
 {
     contentView.frame = self.bounds;
     [self layOutItemViews];
@@ -588,7 +588,7 @@ NSComparisonResult compareViewDepth(UIView *view1, UIView *view2, iCarousel *sel
 - (void)resizeSubviewsWithOldSize:(NSSize)oldSize
 {
 	[CATransaction setDisableActions:YES];
-    [self layoutSubviews];
+    [self DirectionGestureRecognizer];
 	[CATransaction setDisableActions:NO];
 }
 
@@ -814,7 +814,7 @@ NSComparisonResult compareViewDepth(UIView *view1, UIView *view2, iCarousel *sel
     }
 }
 
-- (void)reloadData
+- (void)reloadDataTruncate:(BOOL)truncate
 {
 	//bail out if not set up yet
 	if (!dataSource || !contentView)
@@ -822,13 +822,14 @@ NSComparisonResult compareViewDepth(UIView *view1, UIView *view2, iCarousel *sel
 		return;
 	}
     
-	//remove old views
-    for (UIView *view in self.visibleItemViews)
-    {
-		[view.superview removeFromSuperview];
-	}
-	self.itemViews = [NSMutableDictionary dictionary];
-    
+	if (truncate) {
+		//remove old views
+		for (UIView *view in self.visibleItemViews)
+		{
+			[view.superview removeFromSuperview];
+		}
+		self.itemViews = [NSMutableDictionary dictionary];
+    }
     //get number of items and placeholders
     numberOfItems = [dataSource numberOfItemsInCarousel:self];
     if ([dataSource respondsToSelector:@selector(numberOfPlaceholdersInCarousel:)])
@@ -855,6 +856,10 @@ NSComparisonResult compareViewDepth(UIView *view1, UIView *view2, iCarousel *sel
     }
 }
 
+- (void)reloadData
+{
+	[self reloadDataTruncate:YES];
+}
 
 #pragma mark -
 #pragma mark Scrolling
