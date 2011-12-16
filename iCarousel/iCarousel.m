@@ -1279,7 +1279,7 @@ NSComparisonResult compareViewDepth(UIView *view1, UIView *view2, iCarousel *sel
         CGFloat time = fminf(scrollDuration, currentTime - startTime);
         CGFloat acceleration = -startVelocity/scrollDuration;
         CGFloat distance = startVelocity * time + 0.5f * acceleration * powf(time, 2.0f);
-        scrollOffset = startOffset + distance;
+        scrollOffset = startOffset + distance * self.offsetMultiplier;
         
 		[self didScroll];
         if (time == (CGFloat)scrollDuration)
